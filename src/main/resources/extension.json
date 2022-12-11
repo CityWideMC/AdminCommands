@@ -1,8 +1,11 @@
 {
-  "entrypoint": "me.heroostech.exampleextension.ExampleExtension",
-  "name": "example",
+  "entrypoint": "me.heroostech.admincommands.AdminCommands",
+  "name": "admincommands",
   "version": "v1.0.0",
-  "dependencies": [
-    "minestomfloodgate"
-  ]
+  "meta": {
+    "permissions": [
+      "admincommands.gamemode",
+      "admincommands.teleport"
+    ]
+  }
 }
