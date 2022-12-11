@@ -7,5 +7,13 @@
       "admincommands.gamemode",
       "admincommands.teleport"
     ]
+  },
+  "externalDependencies": {
+    "repositories": [
+      {"name": "jitpack", "url": "https://jitpack.io"}
+    ],
+    "artifacts": [
+      "com.github.MinestomPlugins:lib-permissions:5a9310e71f"
+    ]
   }
 }

@@ -7,3 +7,8 @@
 
 # About the project
 CityStom-ExampleExtension is an example extension that uses CityStom library.
+
+
+
+
+I have to go now, I will continue tomorrow.

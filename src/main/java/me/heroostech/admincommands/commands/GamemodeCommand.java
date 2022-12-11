@@ -1,5 +1,8 @@
 package me.heroostech.admincommands.commands;
 
+import me.heroostech.admincommands.AdminCommands;
+import me.heroostech.citystom.utils.ChatUtil;
+import net.minestom.server.command.ConsoleSender;
 import net.minestom.server.command.builder.Command;
 import net.minestom.server.command.builder.arguments.ArgumentType;
 import net.minestom.server.entity.GameMode;
@@ -16,14 +19,18 @@ public class GamemodeCommand extends Command {
         });
 
         addSyntax((sender, context) -> {
-            var player = (Player) sender;
-            var gmNum = context.get(gamemode);
+            if(sender instanceof ConsoleSender) {
+                sender.sendMessage(ChatUtil.format("<red>Please provide player argument</red>"));
+            } else {
+                var player = (Player) sender;
+                var gmNum = context.get(gamemode);
 
-            if(gmNum < 0 || gmNum > 3) return;
+                if (gmNum < 0 || gmNum > 3) return;
 
-            player.setGameMode(GameMode.fromId(gmNum));
+                player.setGameMode(GameMode.fromId(gmNum));
+            }
         }, gamemode);
 
-        setCondition((sender, commandString) -> sender.hasPermission("admincommands.gamemode"));
+        setCondition((sender, commandString) -> sender instanceof ConsoleSender || AdminCommands.provider.hasExtensionPermission((Player) sender, "gamemode"));
     }
 }
