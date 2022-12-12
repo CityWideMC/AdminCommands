@@ -13,23 +13,48 @@ public class GamemodeCommand extends Command {
         super("gamemode", "gm");
 
         var gamemode = ArgumentType.Integer("gamemode");
+        var player = ArgumentType.Entity("player").onlyPlayers(true);
 
         setDefaultExecutor((sender, context) -> {
-
+            sender.sendMessage(ChatUtil.format("<red>Usage: /gamemode <gamemode> [<player>]"));
         });
 
         addSyntax((sender, context) -> {
             if(sender instanceof ConsoleSender) {
                 sender.sendMessage(ChatUtil.format("<red>Please provide player argument</red>"));
-            } else {
-                var player = (Player) sender;
-                var gmNum = context.get(gamemode);
-
-                if (gmNum < 0 || gmNum > 3) return;
-
-                player.setGameMode(GameMode.fromId(gmNum));
+                return;
             }
+            
+            var player = (Player) sender;
+            var gmNum = context.get(gamemode);
+
+            if (gmNum < 0 || gmNum > 3) return;
+                
+            if(!AdminCommands.provider.hasExtensionPermission(player, "gamemode." + gmNum)) {
+                player.sendMessage(ChatUtil.format("<red>You do have permission to gamemode " + gmNum));
+            }
+
+            player.setGameMode(GameMode.fromId(gmNum));
         }, gamemode);
+
+        addSyntax((sender, context) -> {
+            if(sender instanceof ConsoleSender || AdminCommands.provider.hasExtensionPermission((Player) sender, "gamemode.others")) {}
+            else {
+                sender.sendMessage(ChatUtil.format("<red>You do not have permission to set the gamemode of other players</red>"));
+                return;
+            }
+            
+            var player = context.get(player);
+            var gmNum = context.get(gamemode);
+
+            if (gmNum < 0 || gmNum > 3) return;
+                
+            if(!AdminCommands.provider.hasExtensionPermission(player, "gamemode." + gmNum)) {
+                player.sendMessage(ChatUtil.format("<red>You do have permission to gamemode " + gmNum));
+            }
+
+            player.setGameMode(GameMode.fromId(gmNum));
+        }, gamemode, player);
 
         setCondition((sender, commandString) -> sender instanceof ConsoleSender || AdminCommands.provider.hasExtensionPermission((Player) sender, "gamemode"));
     }
