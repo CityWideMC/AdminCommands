@@ -13,7 +13,7 @@ public class GamemodeCommand extends Command {
         super("gamemode", "gm");
 
         var gamemode = ArgumentType.Integer("gamemode");
-        var player = ArgumentType.Entity("player").onlyPlayers(true);
+        var playerArg = ArgumentType.Entity("player").onlyPlayers(true);
 
         setDefaultExecutor((sender, context) -> {
             sender.sendMessage(ChatUtil.format("<red>Usage: /gamemode <gamemode> [<player>]"));
@@ -44,7 +44,8 @@ public class GamemodeCommand extends Command {
                 return;
             }
             
-            var player = context.get(player); 
+            var player = context.get(playerArg).findFirstPlayer(sender);
+            assert player != null;
             var gmNum = context.get(gamemode);
 
             if (gmNum < 0 || gmNum > 3) return;
@@ -54,7 +55,7 @@ public class GamemodeCommand extends Command {
             }
 
             player.setGameMode(GameMode.fromId(gmNum));
-        }, gamemode, player);
+        }, gamemode, playerArg);
 
         setCondition((sender, commandString) -> sender instanceof ConsoleSender || AdminCommands.provider.hasExtensionPermission((Player) sender, "gamemode"));
     }
