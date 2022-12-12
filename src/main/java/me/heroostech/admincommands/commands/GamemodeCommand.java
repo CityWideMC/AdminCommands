@@ -44,13 +44,13 @@ public class GamemodeCommand extends Command {
                 return;
             }
             
-            var player = context.get(player);
+            var player = context.get(player); 
             var gmNum = context.get(gamemode);
 
             if (gmNum < 0 || gmNum > 3) return;
                 
             if(!AdminCommands.provider.hasExtensionPermission(player, "gamemode." + gmNum)) {
-                player.sendMessage(ChatUtil.format("<red>You do have permission to gamemode " + gmNum));
+                player.sendMessage(ChatUtil.format("<red>You do not have permission to gamemode " + gmNum));
             }
 
             player.setGameMode(GameMode.fromId(gmNum));

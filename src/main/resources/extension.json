@@ -2,6 +2,9 @@
   "entrypoint": "me.heroostech.admincommands.AdminCommands",
   "name": "admincommands",
   "version": "v1.0.0",
+  "authors": [
+    "CityWideMC"
+  ],
   "meta": {
     "permissions": [
       "admincommands.gamemode",
