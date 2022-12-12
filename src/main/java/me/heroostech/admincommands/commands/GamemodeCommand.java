@@ -12,7 +12,9 @@ public class GamemodeCommand extends Command {
     public GamemodeCommand() {
         super("gamemode", "gm");
 
-        var gamemode = ArgumentType.Integer("gamemode");
+        var gamemode = ArgumentType.Enum("gamemode", GameMode.class);
+        var gamemodeNum = ArgumentType.Integer("gamemodenum");
+        var gamemodeStr = ArgumentType.String("gamemodestr");
         var playerArg = ArgumentType.Entity("player").onlyPlayers(true);
 
         setDefaultExecutor((sender, context) -> {
@@ -26,36 +28,170 @@ public class GamemodeCommand extends Command {
             }
             
             var player = (Player) sender;
-            var gmNum = context.get(gamemode);
+            var gm = context.get(gamemode);
 
-            if (gmNum < 0 || gmNum > 3) return;
-                
-            if(!AdminCommands.provider.hasExtensionPermission(player, "gamemode." + gmNum)) {
-                player.sendMessage(ChatUtil.format("<red>You do have permission to gamemode " + gmNum));
+            if(!AdminCommands.provider.hasExtensionPermission(player, "gamemode." + gm.id())) {
+                player.sendMessage(ChatUtil.format("<red>You do not have permission to gamemode " + gm));
+                return;
             }
 
-            player.setGameMode(GameMode.fromId(gmNum));
+            player.setGameMode(gm);
+            player.sendMessage(ChatUtil.format("<green>Your gamemode has been set to </green><dark_green>" + gm + "</dark_green>"));
         }, gamemode);
 
         addSyntax((sender, context) -> {
-            if(sender instanceof ConsoleSender || AdminCommands.provider.hasExtensionPermission((Player) sender, "gamemode.others")) {}
+            var player = context.get(playerArg).findFirstPlayer(sender);
+            if(player == null) {
+                sender.sendMessage(ChatUtil.format("<red>Cannot find player </red><dark_red>" + context.get(playerArg)));
+                return;
+            }
+            if(sender instanceof ConsoleSender || AdminCommands.provider.hasExtensionPermission((Player) sender, "gamemode.others") || ((Player) sender).getUsername() == player.getUsername()) {}
             else {
                 sender.sendMessage(ChatUtil.format("<red>You do not have permission to set the gamemode of other players</red>"));
                 return;
             }
-            
-            var player = context.get(playerArg).findFirstPlayer(sender);
-            assert player != null;
-            var gmNum = context.get(gamemode);
 
-            if (gmNum < 0 || gmNum > 3) return;
+            var gm = context.get(gamemode);
                 
-            if(!AdminCommands.provider.hasExtensionPermission(player, "gamemode." + gmNum)) {
-                player.sendMessage(ChatUtil.format("<red>You do not have permission to gamemode " + gmNum));
+            if(!AdminCommands.provider.hasExtensionPermission(player, "gamemode." + gm.id())) {
+                player.sendMessage(ChatUtil.format("<red>You do not have permission to gamemode " + gm));
+                return;
             }
 
-            player.setGameMode(GameMode.fromId(gmNum));
+            player.setGameMode(gm);
+            player.sendMessage(ChatUtil.format("<green>Your gamemode has been set to </green><dark_green>" + gm + "</dark_green>"));
+
+            if(sender instanceof ConsoleSender || !(((Player) sender).getUsername().equals(player.getUsername())))
+                sender.sendMessage(ChatUtil.format("<dark_green>" + player.getUsername() +
+                        "'s gamemode has been set to </green><dark_green>" + gm + "</dark_green>"));
         }, gamemode, playerArg);
+
+        addSyntax((sender, context) -> {
+            if(sender instanceof ConsoleSender) {
+                sender.sendMessage(ChatUtil.format("<red>Please provide player argument</red>"));
+                return;
+            }
+
+            var player = (Player) sender;
+            var gm = GameMode.fromId(context.get(gamemodeNum));
+
+            if(!AdminCommands.provider.hasExtensionPermission(player, "gamemode." + gm.id())) {
+                player.sendMessage(ChatUtil.format("<red>You do not have permission to gamemode " + gm));
+                return;
+            }
+
+            player.setGameMode(gm);
+            player.sendMessage(ChatUtil.format("<green>Your gamemode has been set to </green><dark_green>" + gm + "</dark_green>"));
+        }, gamemodeNum);
+
+        addSyntax((sender, context) -> {
+            var player = context.get(playerArg).findFirstPlayer(sender);
+            if(player == null) {
+                sender.sendMessage(ChatUtil.format("<red>Cannot find player </red><dark_red>" + context.get(playerArg)));
+                return;
+            }
+            if(sender instanceof ConsoleSender || AdminCommands.provider.hasExtensionPermission((Player) sender, "gamemode.others") || ((Player) sender).getUsername() == player.getUsername()) {}
+            else {
+                sender.sendMessage(ChatUtil.format("<red>You do not have permission to set the gamemode of other players</red>"));
+                return;
+            }
+
+            assert player != null;
+            var gm = GameMode.fromId(context.get(gamemodeNum));
+
+            if(!AdminCommands.provider.hasExtensionPermission(player, "gamemode." + gm.id())) {
+                player.sendMessage(ChatUtil.format("<red>You do not have permission to gamemode " + gm));
+                return;
+            }
+
+            player.setGameMode(gm);
+            player.sendMessage(ChatUtil.format("<green>Your gamemode has been set to </green><dark_green>" + gm + "</dark_green>"));
+            if(sender instanceof ConsoleSender || !(((Player) sender).getUsername().equals(player.getUsername())))
+                sender.sendMessage(ChatUtil.format("<dark_green>" + player.getUsername() +
+                        "'s gamemode has been set to </green><dark_green>" + gm + "</dark_green>"));
+        }, gamemodeNum, playerArg);
+
+        addSyntax((sender, context) -> {
+            if(sender instanceof ConsoleSender) {
+                sender.sendMessage(ChatUtil.format("<red>Please provide player argument</red>"));
+                return;
+            }
+
+            GameMode gm = null;
+
+            var player = (Player) sender;
+            switch (context.get(gamemodeStr)) {
+                case "s" -> {
+                    gm = GameMode.SURVIVAL;
+                }
+                case "c" -> {
+                    gm = GameMode.CREATIVE;
+                }
+                case "a" -> {
+                    gm = GameMode.ADVENTURE;
+                }
+                case "sp" -> {
+                    gm = GameMode.SPECTATOR;
+                }
+                default -> {
+                    sender.sendMessage(ChatUtil.format("<red>Unknown gamemode</red>"));
+                    return;
+                }
+            }
+
+            if(!AdminCommands.provider.hasExtensionPermission(player, "gamemode." + gm.id())) {
+                player.sendMessage(ChatUtil.format("<red>You do not have permission to gamemode " + gm));
+                return;
+            }
+
+            player.setGameMode(gm);
+            player.sendMessage(ChatUtil.format("<green>Your gamemode has been set to </green><dark_green>" + gm + "</dark_green>"));
+        }, gamemodeStr);
+
+        addSyntax((sender, context) -> {
+            var player = context.get(playerArg).findFirstPlayer(sender);
+            if(player == null) {
+                sender.sendMessage(ChatUtil.format("<red>Cannot find player </red><dark_red>" + context.get(playerArg)));
+                return;
+            }
+            if(sender instanceof ConsoleSender || AdminCommands.provider.hasExtensionPermission((Player) sender, "gamemode.others") || ((Player) sender).getUsername() == player.getUsername()) {}
+            else {
+                sender.sendMessage(ChatUtil.format("<red>You do not have permission to set the gamemode of other players</red>"));
+                return;
+            }
+
+            assert player != null;
+            GameMode gm = null;
+            switch (context.get(gamemodeStr)) {
+                case "s" -> {
+                    gm = GameMode.SURVIVAL;
+                }
+                case "c" -> {
+                    gm = GameMode.CREATIVE;
+                }
+                case "a" -> {
+                    gm = GameMode.ADVENTURE;
+                }
+                case "sp" -> {
+                    gm = GameMode.SPECTATOR;
+                }
+                default -> {
+                    sender.sendMessage(ChatUtil.format("<red>Unknown gamemode</red>"));
+                    return;
+                }
+            }
+
+            if(!AdminCommands.provider.hasExtensionPermission(player, "gamemode." + gm.id())) {
+                player.sendMessage(ChatUtil.format("<red>You do not have permission to gamemode " + gm));
+                return;
+            }
+
+            player.setGameMode(gm);
+            player.sendMessage(ChatUtil.format("<green>Your gamemode has been set to </green><dark_green>" + gm + "</dark_green>"));
+            if(sender instanceof ConsoleSender || !(((Player) sender).getUsername().equals(player.getUsername())))
+                sender.sendMessage(ChatUtil.format("<dark_green>" + player.getUsername() +
+                        "'s gamemode has been set to </green><dark_green>" + gm + "</dark_green>"));
+        }, gamemodeStr, playerArg);
 
         setCondition((sender, commandString) -> sender instanceof ConsoleSender || AdminCommands.provider.hasExtensionPermission((Player) sender, "gamemode"));
     }
