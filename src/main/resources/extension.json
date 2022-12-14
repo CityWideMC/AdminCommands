@@ -17,8 +17,7 @@
       {"name": "jitpack", "url": "https://jitpack.io"}
     ],
     "artifacts": [
-      "com.github.MinestomPlugins:lib-permissions:v1.0.3",
-      "com.github.CityWideMC:CityStom:1.0.0"
+      "com.github.MinestomPlugins:NextLib:master-SNAPSHOT"
     ]
   }
 }

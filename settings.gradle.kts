@@ -6,9 +6,8 @@ dependencyResolutionManagement {
     versionCatalogs {
         create("libs") {
             library("minestom", "com.github.minestom.minestom:Minestom:-SNAPSHOT")
-            library("citystom", "com.github.CityWideMC:CityStom:1.0.0")
             library("lombok", "org.projectlombok:lombok:1.18.24")
-            library("permissions", "com.github.MinestomPlugins:lib-permissions:v1.0.3")
+            library("nextlib", "com.github.MinestomPlugins:NextLib:master-SNAPSHOT")
         }
     }
 }

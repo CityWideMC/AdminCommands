@@ -14,9 +14,8 @@ repositories {
 
 dependencies {
     compileOnly(libs.minestom)
-    compileOnly(libs.citystom)
+    compileOnly(libs.nextlib)
     compileOnly(libs.lombok)
-    compileOnly(libs.permissions)
     annotationProcessor(libs.lombok)
 }
 

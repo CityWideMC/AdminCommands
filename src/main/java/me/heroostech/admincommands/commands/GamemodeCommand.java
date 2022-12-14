@@ -2,15 +2,15 @@ package me.heroostech.admincommands.commands;
 
 import me.heroostech.admincommands.AdminCommands;
 import me.heroostech.citystom.utils.ChatUtil;
+import me.window.next.command.Command;
 import net.minestom.server.command.ConsoleSender;
-import net.minestom.server.command.builder.Command;
 import net.minestom.server.command.builder.arguments.ArgumentType;
 import net.minestom.server.entity.GameMode;
 import net.minestom.server.entity.Player;
 
 public class GamemodeCommand extends Command {
     public GamemodeCommand() {
-        super("gamemode", "gm");
+        super(AdminCommands.provider, "gamemode", "gm");
 
         var gamemode = ArgumentType.Enum("gamemode", GameMode.class);
         var gamemodeNum = ArgumentType.Integer("gamemodenum");
@@ -30,7 +30,7 @@ public class GamemodeCommand extends Command {
             var player = (Player) sender;
             var gm = context.get(gamemode);
 
-            if(!AdminCommands.provider.hasExtensionPermission(player, "gamemode." + gm.id())) {
+            if(!AdminCommands.provider.hasPermission(player, "gamemode." + gm.id())) {
                 player.sendMessage(ChatUtil.format("<red>You do not have permission to gamemode " + gm));
                 return;
             }
@@ -45,7 +45,7 @@ public class GamemodeCommand extends Command {
                 sender.sendMessage(ChatUtil.format("<red>Cannot find player </red><dark_red>" + context.get(playerArg)));
                 return;
             }
-            if(sender instanceof ConsoleSender || AdminCommands.provider.hasExtensionPermission((Player) sender, "gamemode.others") || ((Player) sender).getUsername() == player.getUsername()) {}
+            if(sender instanceof ConsoleSender || AdminCommands.provider.hasPermission((Player) sender, "gamemode.others") || ((Player) sender).getUsername() == player.getUsername()) {}
             else {
                 sender.sendMessage(ChatUtil.format("<red>You do not have permission to set the gamemode of other players</red>"));
                 return;
@@ -53,7 +53,7 @@ public class GamemodeCommand extends Command {
 
             var gm = context.get(gamemode);
                 
-            if(!AdminCommands.provider.hasExtensionPermission(player, "gamemode." + gm.id())) {
+            if(!AdminCommands.provider.hasPermission(player, "gamemode." + gm.id())) {
                 player.sendMessage(ChatUtil.format("<red>You do not have permission to gamemode " + gm));
                 return;
             }
@@ -75,7 +75,7 @@ public class GamemodeCommand extends Command {
             var player = (Player) sender;
             var gm = GameMode.fromId(context.get(gamemodeNum));
 
-            if(!AdminCommands.provider.hasExtensionPermission(player, "gamemode." + gm.id())) {
+            if(!AdminCommands.provider.hasPermission(player, "gamemode." + gm.id())) {
                 player.sendMessage(ChatUtil.format("<red>You do not have permission to gamemode " + gm));
                 return;
             }
@@ -90,7 +90,7 @@ public class GamemodeCommand extends Command {
                 sender.sendMessage(ChatUtil.format("<red>Cannot find player </red><dark_red>" + context.get(playerArg)));
                 return;
             }
-            if(sender instanceof ConsoleSender || AdminCommands.provider.hasExtensionPermission((Player) sender, "gamemode.others") || ((Player) sender).getUsername() == player.getUsername()) {}
+            if(sender instanceof ConsoleSender || AdminCommands.provider.hasPermission((Player) sender, "gamemode.others") || ((Player) sender).getUsername() == player.getUsername()) {}
             else {
                 sender.sendMessage(ChatUtil.format("<red>You do not have permission to set the gamemode of other players</red>"));
                 return;
@@ -99,7 +99,7 @@ public class GamemodeCommand extends Command {
             assert player != null;
             var gm = GameMode.fromId(context.get(gamemodeNum));
 
-            if(!AdminCommands.provider.hasExtensionPermission(player, "gamemode." + gm.id())) {
+            if(!AdminCommands.provider.hasPermission(player, "gamemode." + gm.id())) {
                 player.sendMessage(ChatUtil.format("<red>You do not have permission to gamemode " + gm));
                 return;
             }
@@ -139,7 +139,7 @@ public class GamemodeCommand extends Command {
                 }
             }
 
-            if(!AdminCommands.provider.hasExtensionPermission(player, "gamemode." + gm.id())) {
+            if(!AdminCommands.provider.hasPermission(player, "gamemode." + gm.id())) {
                 player.sendMessage(ChatUtil.format("<red>You do not have permission to gamemode " + gm));
                 return;
             }
@@ -154,7 +154,7 @@ public class GamemodeCommand extends Command {
                 sender.sendMessage(ChatUtil.format("<red>Cannot find player </red><dark_red>" + context.get(playerArg)));
                 return;
             }
-            if(sender instanceof ConsoleSender || AdminCommands.provider.hasExtensionPermission((Player) sender, "gamemode.others") || ((Player) sender).getUsername() == player.getUsername()) {}
+            if(sender instanceof ConsoleSender || AdminCommands.provider.hasPermission((Player) sender, "gamemode.others") || ((Player) sender).getUsername() == player.getUsername()) {}
             else {
                 sender.sendMessage(ChatUtil.format("<red>You do not have permission to set the gamemode of other players</red>"));
                 return;
@@ -181,7 +181,7 @@ public class GamemodeCommand extends Command {
                 }
             }
 
-            if(!AdminCommands.provider.hasExtensionPermission(player, "gamemode." + gm.id())) {
+            if(!AdminCommands.provider.hasPermission(player, "gamemode." + gm.id())) {
                 player.sendMessage(ChatUtil.format("<red>You do not have permission to gamemode " + gm));
                 return;
             }
@@ -193,6 +193,6 @@ public class GamemodeCommand extends Command {
                         "'s gamemode has been set to </green><dark_green>" + gm + "</dark_green>"));
         }, gamemodeStr, playerArg);
 
-        setCondition((sender, commandString) -> sender instanceof ConsoleSender || AdminCommands.provider.hasExtensionPermission((Player) sender, "gamemode"));
+        setCondition((sender, commandString) -> sender instanceof ConsoleSender || AdminCommands.provider.hasPermission((Player) sender, "gamemode"));
     }
 }
