@@ -6,4 +6,4 @@
   </p>
 
 # About the project
-CityStom-ExampleExtension is an example extension that uses CityStom library.
+AdminCommands is an extension for minestom that adds necessary admin commands.
