@@ -4,7 +4,11 @@ import me.heroostech.admincommands.AdminCommands;
 import me.heroostech.citystom.utils.ChatUtil;
 import me.window.next.command.Command;
 import net.minestom.server.command.ConsoleSender;
+import net.minestom.server.command.builder.arguments.ArgumentEnum;
+import net.minestom.server.command.builder.arguments.ArgumentString;
 import net.minestom.server.command.builder.arguments.ArgumentType;
+import net.minestom.server.command.builder.arguments.minecraft.ArgumentEntity;
+import net.minestom.server.command.builder.arguments.number.ArgumentInteger;
 import net.minestom.server.entity.GameMode;
 import net.minestom.server.entity.Player;
 
@@ -12,10 +16,10 @@ public class GamemodeCommand extends Command {
     public GamemodeCommand() {
         super(AdminCommands.provider, "gamemode", "gm");
 
-        var gamemode = ArgumentType.Enum("gamemode", GameMode.class);
-        var gamemodeNum = ArgumentType.Integer("gamemodenum");
-        var gamemodeStr = ArgumentType.String("gamemodestr");
-        var playerArg = ArgumentType.Entity("player").onlyPlayers(true);
+        ArgumentEnum<GameMode> gamemode = ArgumentType.Enum("gamemode", GameMode.class);
+        ArgumentInteger gamemodeNum = ArgumentType.Integer("gamemodenum");
+        ArgumentString gamemodeStr = ArgumentType.String("gamemodestr");
+        ArgumentEntity playerArg = ArgumentType.Entity("player").onlyPlayers(true);
 
         setDefaultExecutor((sender, context) -> {
             sender.sendMessage(ChatUtil.format("<red>Usage: /gamemode <gamemode> [<player>]"));
@@ -27,8 +31,8 @@ public class GamemodeCommand extends Command {
                 return;
             }
             
-            var player = (Player) sender;
-            var gm = context.get(gamemode);
+            Player player = (Player) sender;
+            GameMode gm = context.get(gamemode);
 
             if(!AdminCommands.provider.hasPermission(player, "gamemode." + gm.id())) {
                 player.sendMessage(ChatUtil.format("<red>You do not have permission to gamemode " + gm));
@@ -40,7 +44,7 @@ public class GamemodeCommand extends Command {
         }, gamemode);
 
         addSyntax((sender, context) -> {
-            var player = context.get(playerArg).findFirstPlayer(sender);
+            Player player = context.get(playerArg).findFirstPlayer(sender);
             if(player == null) {
                 sender.sendMessage(ChatUtil.format("<red>Cannot find player </red><dark_red>" + context.get(playerArg)));
                 return;
@@ -51,7 +55,7 @@ public class GamemodeCommand extends Command {
                 return;
             }
 
-            var gm = context.get(gamemode);
+            GameMode gm = context.get(gamemode);
                 
             if(!AdminCommands.provider.hasPermission(player, "gamemode." + gm.id())) {
                 player.sendMessage(ChatUtil.format("<red>You do not have permission to gamemode " + gm));
@@ -72,8 +76,8 @@ public class GamemodeCommand extends Command {
                 return;
             }
 
-            var player = (Player) sender;
-            var gm = GameMode.fromId(context.get(gamemodeNum));
+            Player player = (Player) sender;
+            GameMode gm = GameMode.fromId(context.get(gamemodeNum));
 
             if(!AdminCommands.provider.hasPermission(player, "gamemode." + gm.id())) {
                 player.sendMessage(ChatUtil.format("<red>You do not have permission to gamemode " + gm));
@@ -85,7 +89,7 @@ public class GamemodeCommand extends Command {
         }, gamemodeNum);
 
         addSyntax((sender, context) -> {
-            var player = context.get(playerArg).findFirstPlayer(sender);
+            Player player = context.get(playerArg).findFirstPlayer(sender);
             if(player == null) {
                 sender.sendMessage(ChatUtil.format("<red>Cannot find player </red><dark_red>" + context.get(playerArg)));
                 return;
@@ -97,7 +101,7 @@ public class GamemodeCommand extends Command {
             }
 
             assert player != null;
-            var gm = GameMode.fromId(context.get(gamemodeNum));
+            GameMode gm = GameMode.fromId(context.get(gamemodeNum));
 
             if(!AdminCommands.provider.hasPermission(player, "gamemode." + gm.id())) {
                 player.sendMessage(ChatUtil.format("<red>You do not have permission to gamemode " + gm));
@@ -119,7 +123,7 @@ public class GamemodeCommand extends Command {
 
             GameMode gm = null;
 
-            var player = (Player) sender;
+            Player player = (Player) sender;
             switch (context.get(gamemodeStr)) {
                 case "s" -> {
                     gm = GameMode.SURVIVAL;
@@ -149,7 +153,7 @@ public class GamemodeCommand extends Command {
         }, gamemodeStr);
 
         addSyntax((sender, context) -> {
-            var player = context.get(playerArg).findFirstPlayer(sender);
+            Player player = context.get(playerArg).findFirstPlayer(sender);
             if(player == null) {
                 sender.sendMessage(ChatUtil.format("<red>Cannot find player </red><dark_red>" + context.get(playerArg)));
                 return;
