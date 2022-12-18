@@ -36,8 +36,6 @@ public class TeleportCommand extends Command {
             player.teleport(position);
             player.sendMessage(ChatUtil.format("<green>Teleported you to </green><dark_green>" + position.x() + " " + position.y() + " " + position.z() + "</dark_green>"));
         }, positionArg);
-
-        setCondition((sender, commandString) -> sender instanceof ConsoleSender || AdminCommands.provider.hasPermission((Player) sender, "teleport"));
     }
     
 }
