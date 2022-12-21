@@ -13,7 +13,5 @@ public class AdminCommands extends Extension {
     }
 
     @Override
-    public void terminate() {
-
-    }
+    public void terminate() {}
 }
