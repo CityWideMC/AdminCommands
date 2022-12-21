@@ -109,7 +109,7 @@ public class TeleportCommand extends Command {
 
         addSyntax((sender, context) -> {
             Player player = context.get(playerArg).findFirstPlayer(sender);
-            Pos position = context.get(positionArg).from();
+            Pos position = context.get(positionArg).from(player.getPosition()).asPosition();
 
             if(!provider.hasPermission(player, "position")) {
                 player.sendMessage(ChatUtil.format("<red>You do not have permission to player teleport!"));
