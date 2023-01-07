@@ -4,6 +4,7 @@ import me.heroostech.admincommands.commands.GamemodeCommand;
 import me.heroostech.admincommands.commands.OpCommand;
 import me.heroostech.admincommands.commands.TeleportCommand;
 import me.window.next.extension.Extension;
+import me.window.permissions.PermissionProvider;
 
 public class AdminCommands extends Extension {
 

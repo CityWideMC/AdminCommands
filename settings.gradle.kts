@@ -7,7 +7,7 @@ dependencyResolutionManagement {
         create("libs") {
             library("minestom", "com.github.minestom.minestom:Minestom:-SNAPSHOT")
             library("lombok", "org.projectlombok:lombok:1.18.24")
-            library("nextlib", "com.github.MinestomPlugins:NextLib:v1.0.5")
+            library("nextlib", "com.github.MinestomPlugins:NextLib:v1.0.6")
         }
     }
 }

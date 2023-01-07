@@ -34,7 +34,7 @@ public class OpCommand extends Command {
             }
             sender.sendMessage(Component.text(player.getUsername() + " is now permission level " + player.getPermissionLevel(), NamedTextColor.GREEN));
             player.sendMessage(Component.text("Your op level has been set to " + player.getPermissionLevel()));
-
+            player.refreshCommands();
         }, playerArg);
 
         addSyntax((CommandSender sender, CommandContext context) -> {
@@ -46,6 +46,7 @@ public class OpCommand extends Command {
             }
             sender.sendMessage(Component.text(player.getUsername() + " is now permission level " + player.getPermissionLevel(), NamedTextColor.GREEN));
             player.sendMessage(Component.text("Your op level has been set to " + player.getPermissionLevel()));
+            player.refreshCommands();
         }, playerArg, levelArg);
     }
 

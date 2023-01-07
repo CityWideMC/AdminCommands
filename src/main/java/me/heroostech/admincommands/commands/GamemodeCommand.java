@@ -1,7 +1,7 @@
 package me.heroostech.admincommands.commands;
 
 import me.heroostech.admincommands.AdminCommands;
-import me.heroostech.citystom.utils.ChatUtil;
+import xyz.citywide.citystom.utils.ChatUtil;
 import me.window.next.command.Command;
 import net.minestom.server.command.ConsoleSender;
 import net.minestom.server.command.builder.arguments.ArgumentEnum;

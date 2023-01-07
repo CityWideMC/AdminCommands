@@ -19,6 +19,10 @@ dependencies {
     annotationProcessor(libs.lombok)
 }
 
+tasks.build {
+    dependsOn("shadowJar")
+}
+
 tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
-    archiveFileName.set("AdminCommands.jar")
+    archiveFileName.set("AdminCommands-$archiveVersion.jar")
 }
